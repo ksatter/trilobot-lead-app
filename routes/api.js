@@ -63,13 +63,13 @@ router.route('/leads')
     .post((req, res) => {
         console.log(req.body)
         const channelLead = leadList[req.body.channel_id]
-        const allLeads = [...new Set([...Object.values(leadList), channelLead])]
-
+        const allLeads = [...new Set([...Object.values(leadList)])].filter(lead => lead !== channelLead)
+    
         res.status(200).send(
           (  channelLead ?
             `\nThe current lead for <#${req.body.channel_id}> is: <@${channelLead}>\n\n ` : '' ) +
-            (allLeads.length > 1 ?  
-            `All Leads on duty:\n\n` +
+            (allLeads.length ?  
+            `${channelLead ? 'Also ' : `Lead${allLeads.length > 1 ? 's' : ''}`} on duty:\n\n` +
              allLeads.map(lead => `\n <@${lead}>`) : 'There are no leads currently on duty')
         )
     })
