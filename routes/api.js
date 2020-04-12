@@ -47,7 +47,7 @@ router.route('/lead/which')
                 !channel.members.includes(req.body.user_id) ? 
                     `Access Denied`
                 :channels.length ?
-                    `You are logged in on: ${channelList.map(channel => `#${channel}`)}`
+                    `You are logged in on:${channelList.map(channel => ` #${channel}`)}`
                 :`You are logged out on all channels`
 
             res.status(200).send(message)
