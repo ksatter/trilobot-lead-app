@@ -66,7 +66,7 @@ router.route('/leads')
         const allLeads = [...new Set([...Object.values(leadList)])].filter(lead => lead !== channelLead)
 
         const message = 
-            currentLead ? 
+            channelLead ? 
                 `\nThe current lead for #${req.body.channel_id} is: @${channelLead}\n\n`
             : allLeads.length ? 
                 `\n\n${channelLead ? `Also: `: `Lead${allLeads.length > 1 ? `s` : ``}` } logged in:\n\n ${allLeads.map(lead => `@${lead}`)}`
