@@ -66,9 +66,10 @@ router.route('/leads')
         const allLeads = [...new Set([...Object.values(leadList)])].filter(lead => lead !== channelLead)
 
         const message = 
-            currentLead ? `\nThe current lead for <#${req.body.channel_id}> is: <@${channelLead}>\n\n`
+            currentLead ? 
+                `\nThe current lead for <#${req.body.channel_id}> is: <@${channelLead}>\n\n`
             : allLeads.length ? 
-                `\n\n${channelLead ? `Also: `: `Lead${allLeads.length > 1 ? `s` : ``}` } logged in:\n\n ${allLeads.map(lead => `<@lead>`)}`
+                `\n\n${channelLead ? `Also: `: `Lead${allLeads.length > 1 ? `s` : ``}` } logged in:\n\n ${allLeads.map(lead => `<@${lead}>`)}`
             : 'There are no leads currently online'
     
         res.status(200).send(message)
