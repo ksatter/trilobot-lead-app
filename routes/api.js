@@ -69,9 +69,9 @@ router.route('/leads')
           (  channelLead ? `\nThe current lead for <#${req.body.channel_id}> is: <@${channelLead}>\n\n ` 
 
             : allLeads.length ?  
-            `${channelLead ? 'Also ' : `Lead${allLeads.length > 1 ? 's' : ''}`} on duty:\n\n` + allLeads.map(lead => `\n <@${lead}>`) 
+            `${channelLead ? 'Also ' : `Lead${allLeads.length > 1 ? 's' : ''}`} online: \n\n` + allLeads.map(lead => `\n <@${lead}>`) 
             
-            : 'There are no leads currently on duty')
+            : 'There are no leads currently online')
         )
     })
 
