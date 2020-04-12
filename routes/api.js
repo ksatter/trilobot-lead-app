@@ -62,12 +62,12 @@ router.route('/lead/which')
 router.route('/leads')
     .post((req, res) => {
         console.log(req.body)
-
+    
         res.status(200).send(
           (  leadList[req.body.channel_id] ?
             `\nThe current lead for <#${req.body.channel_id}> is: <@${leadList[req.body.channel_id]}>\n\n ` : '' ) +
             (Object.values(leadList).length ?  
-            `Leads on duty:\n\n` +
+            `Lead${Object.values(leadList).length > 1 ? 's' : null } on duty:\n\n` +
              [...new Set(Object.values(leadList))].map(lead => `\n <@${lead}>`) : 'There are no leads currently on duty')
         )
     })
