@@ -63,7 +63,7 @@ router.route('/leads')
     .post((req, res) => {
         console.log(req.body)
         const channelLead = leadList[req.body.channel_id]
-        const allLeads = [...new Set([...Object.values(leadList), channelLead)]
+        const allLeads = [...new Set([...Object.values(leadList), channelLead])]
 
         res.status(200).send(
           (  channelLead ?
