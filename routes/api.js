@@ -67,7 +67,7 @@ router.route('/leads')
           (  leadList[req.body.channel_id] ?
             `\nThe current lead for <#${req.body.channel_id}> is: <@${leadList[req.body.channel_id]}>\n\n ` : '' ) +
             (Object.values(leadList).length ?  
-            `Lead${Object.values(leadList).length > 1 ? 's' : null } on duty:\n\n` +
+            `Lead${Object.values(leadList).length > 1 ? 's' : '' } on duty:\n\n` +
              [...new Set(Object.values(leadList))].map(lead => `\n <@${lead}>`) : 'There are no leads currently on duty')
         )
     })
