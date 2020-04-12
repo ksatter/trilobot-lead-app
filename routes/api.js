@@ -67,9 +67,9 @@ router.route('/leads')
 
         const message = 
             currentLead ? 
-                `\nThe current lead for <#${req.body.channel_id}> is: <@${channelLead}>\n\n`
+                `\nThe current lead for #${req.body.channel_id} is: @${channelLead}\n\n`
             : allLeads.length ? 
-                `\n\n${channelLead ? `Also: `: `Lead${allLeads.length > 1 ? `s` : ``}` } logged in:\n\n ${allLeads.map(lead => `<@${lead}>`)}`
+                `\n\n${channelLead ? `Also: `: `Lead${allLeads.length > 1 ? `s` : ``}` } logged in:\n\n ${allLeads.map(lead => `@${lead}`)}`
             : 'There are no leads currently online'
     
         res.status(200).send(message)
