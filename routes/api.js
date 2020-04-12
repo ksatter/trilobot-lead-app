@@ -7,23 +7,70 @@ const leadList = require('../lib/data')
 
 router.route('/lead/login')
     .post((req, res) => {
-        api.conversations.members({channel: 'G0123HSNSFJ'}).then(res => console.log(res))
-
-        leadList[req.body.channel_id] = req.body.user_name;
-        console.log(leadList)
-        res.status(200).send(`You are now Lead on record for <#${req.body.channel_id}>`)
+        api.conversations.members({channel: 'G0123HSNSFJ'})
+            .then( channel => {
+                if (channel.members.includes(req.body.user_id)) {
+                    leadList[req.body.channel_id] = req.body.user_id;
+                    console.log(leadList)
+                    res.status(200).send(`You are now Lead on record for <#${req.body.channel_id}>`)
+                } else {
+                    res.status(200).send(`Access Denied`)
+                }
+            })
     })
+
+router.route('/lead/logout')
+.post((req, res) => {
+    api.conversations.members({channel: 'G0123HSNSFJ'})
+        .then( channel => {
+            if (channel.members.includes(req.body.user_id)) {
+                
+                for (const channel in leadList) {
+                    if (leadList[channel] === req.body.user_id) {
+                        leadList[channel] = ""
+                    }
+                }
+
+                res.status(200).send(`You are logged out on all channels`)
+            } else {
+                res.status(200).send(`Access Denied`)
+            }
+        })
+})
+
+router.route('/lead/which')
+.post((req, res) => {
+    api.conversations.members({channel: 'G0123HSNSFJ'})
+        .then( channel => {
+
+            const channelList = []
+            if (channel.members.includes(req.body.user_id)) {
+                
+                for (const channel in leadList) {
+                    if (leadList[channel] === req.body.user_id) {
+                        channelList.push(leadList[channel]) 
+                    }
+                }
+
+                res.status(200).send(channelList.length ? `You are logged in on: ${channelList.map(channel => `#${channel}`)}`:`You are logged out on all channels`)
+            } else {
+                res.status(200).send(`Access Denied`)
+            }
+        })
+})
 
 router.route('/leads')
     .post((req, res) => {
         console.log(req.body)
+
         res.status(200).send(
-            leadList[req.body.channel_id] ?
-            `The current lead for <@${req.body.channel_id}> is: <@${leadList[req.body.channel_id]}>` : null +
-            Object.values(leadList).length > 1 ?  
-            `\n\n Leads on duty:` +
-             Object.values(Leadlist).map(leads => `\n <@${lead}>`) : 'There are no leads currently on duty'
+          (  leadList[req.body.channel_id] ?
+            `\nThe current lead for <#${req.body.channel_id}> is: <@${leadList[req.body.channel_id]}>\n\n ` : '' ) +
+            (Object.values(leadList).length ?  
+            `Leads on duty:\n\n` +
+             [...new Set(Object.values(leadList))].map(lead => `\n <@${lead}>`) : 'There are no leads currently on duty')
         )
     })
+
 
 module.exports = router
