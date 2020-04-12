@@ -42,20 +42,28 @@ router.route('/lead/which')
 .post((req, res) => {
     api.conversations.members({channel: 'G0123HSNSFJ'})
         .then( channel => {
+            const channels = Object.keys(leadList).filter(key => leadList[key] === req.body.user_id)
+            const message = 
+                !channel.members.includes(req.body.user_id) ? 
+                    `Access Denied`
+                :channels.length ?
+                    `You are logged in on: ${channelList.map(channel => `#${channel}`)}`
+                :`You are logged out on all channels`
 
-            const channelList = []
-            if (channel.members.includes(req.body.user_id)) {
+            res.status(200).send(message)
+            // const channelList = []
+            // if (channel.members.includes(req.body.user_id)) {
                 
-                for (const channel in leadList) {
-                    if (leadList[channel] === req.body.user_id) {
-                        channelList.push(leadList[channel]) 
-                    }
-                }
+            //     for (const channel in leadList) {
+            //         if (leadList[channel] === req.body.user_id) {
+            //             channelList.push(leadList[channel]) 
+            //         }
+            //     }
 
-                res.status(200).send(channelList.length ? `You are logged in on: ${channelList.map(channel => `#${channel}`)}`:`You are logged out on all channels`)
-            } else {
-                res.status(200).send(`Access Denied`)
-            }
+            //     res.status(200).send(channelList.length ? `You are logged in on: ${channelList.map(channel => `#${channel}`)}`:`You are logged out on all channels`)
+            // } else {
+            //     res.status(200).send(`Access Denied`)
+            // }
         })
 })
 
