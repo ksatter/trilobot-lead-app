@@ -48,7 +48,7 @@ router.route('/lead/which')
                 !channel.members.includes(req.body.user_id) ? 
                     `Access Denied`
                 :channels.length ?
-                    `You are logged in on:${channels.map(channel => ` #${channel}`)}`
+                    `You are logged in on:${channels.map(channel => ` <#${channel}>`)}`
                 :`You are logged out on all channels`
             console.log(message)
             res.status(200).send(message)
@@ -62,12 +62,15 @@ router.route('/leads')
         const channelLead = leadList[req.body.channel_id]
         const allLeads = [...new Set([...Object.values(leadList)])].filter(lead => lead !== channelLead)
 
-        const message = 
+        let message = 
             channelLead ? 
-                `\nThe current lead for #${req.body.channel_id} is: @${channelLead}\n\n`
-            : allLeads.length ? 
-                `\n\n${channelLead ? `Also: `: `Lead${allLeads.length > 1 ? `s` : ``}` } logged in:\n\n ${allLeads.map(lead => `@${lead}`)}`
-            : 'There are no leads currently online'
+                `\nThe current lead for <#${req.body.channel_id}> is: <@${channelLead}>\n\n` 
+                : ''
+
+        message += 
+            allLeads.length ? 
+                `\n\n${channelLead ? `Also`: `Lead${allLeads.length > 1 ? `s` : ``}` } logged in:\n\n ${allLeads.map(lead => `<@${lead}>`)}`
+            : channelLead ? '' : 'There are no leads currently online'
     
         res.status(200).send(message)
     })
