@@ -14,7 +14,7 @@ router.route("/")
 
             // We'll do a GET call to Slack's `oauth.access` endpoint, passing our app's client ID, client secret, and the code we just got as query parameters.
             request({
-                url: 'https://slack.com/api/oauth.access', //URL to hit
+                url: 'https://slack.com/api/oauth.v2.access', //URL to hit
                 qs: { code: req.query.code, client_id: slack.clientID, client_secret: slack.clientSecret, redirect_uri: "https://trilobot-lead.herokuapp.com/oauth/" }, //Query string data
                 method: 'GET', //Specify the method
 
