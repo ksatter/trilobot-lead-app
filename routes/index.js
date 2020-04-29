@@ -10,10 +10,7 @@ router.use('/api', apiRoutes);
 router.use('/oauth', oAuthRoutes);
 
 router.get('/', (req, res) => {
-    res.redirect(url.format({
-        path: '/oauth',
-        query: req.query
-    }))
+    res.redirect("/oauth")
 })
 
 module.exports = router
