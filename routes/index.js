@@ -9,7 +9,7 @@ router.use('/api', apiRoutes);
 router.use('/oauth', oAuthRoutes);
 
 router.get('*', (req, res) => {
-    res.send("Nothing to see here, folks. Move it along.")
+    res.redirect('/oauth')
 })
 
 module.exports = router
