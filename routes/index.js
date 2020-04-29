@@ -13,5 +13,7 @@ router.get('/', (req, res) => {
     console.log(req.query)
     res.redirect(`/oauth/?code=${req.query.code}`)
 })
-
+router.get('/success', (req, res) => {
+    res.send("Success!")
+})
 module.exports = router
