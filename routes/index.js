@@ -9,11 +9,9 @@ const router = require('express').Router();
 router.use('/api', apiRoutes);
 router.use('/oauth', oAuthRoutes);
 
-// router.get('*', (req, res) => {
-//     res.redirect(url.format({
-//         path: '/oauth',
-//         query: req.query
-//     }))
-// })
+router.get('*', (req, res) => {
+    console.log(req.body)
+    res.send("okie")
+})
 
 module.exports = router
