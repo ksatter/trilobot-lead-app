@@ -22,7 +22,7 @@ router.route("/")
                 if (error) {
                     console.log(error);
                 } else {
-                    console.log(body.authed_user)
+                    console.log(body)
                     res.json(body);
 
                 }
