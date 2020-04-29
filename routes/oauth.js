@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const {slack} = require('../lib/keys')
+const request = require('request')
 
 router.route("/")
     .get((req, res) => {
