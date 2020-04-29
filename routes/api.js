@@ -1,78 +1,59 @@
 const router = require('express').Router();
-const { WebClient } = require('@slack/web-api');
-const {slack} = require('../lib/keys')
 
-const api  = new WebClient(slack.botToken)
-const leadList = require('../lib/data')
+const store = require('../lib/store')
 
-router.route('/lead/login')
-    .post((req, res) => {
-        api.conversations.members({channel: 'G0123HSNSFJ'})
-            .then( channel => {
-                if (channel.members.includes(req.body.user_id)) {
-                    leadList[req.body.channel_id] = req.body.user_id;
-                    console.log(leadList)
-                    res.status(200).send(`You are now Lead on record for <#${req.body.channel_id}>`)
-                } else {
-                    res.status(200).send(`Access Denied`)
-                }
-            })
-    })
 
-router.route('/lead/logout')
-.post((req, res) => {
-    api.conversations.members({channel: 'G0123HSNSFJ'})
-        .then( channel => {
-            if (channel.members.includes(req.body.user_id)) {
-                
-                for (const channel in leadList) {
-                    if (leadList[channel] === req.body.user_id) {
-                        leadList[channel] = ""
-                    }
-                }
-
-                res.status(200).send(`You are logged out on all channels`)
-            } else {
-                res.status(200).send(`Access Denied`)
-            }
-        })
-})
-
-router.route('/lead/which')
-.post((req, res) => {
-    api.conversations.members({channel: 'G0123HSNSFJ'})
-        .then( channel => {
-            const channels = Object.keys(leadList).filter(key => leadList[key] === req.body.user_id)
-            console.log(channels)
-            const message = 
-                !channel.members.includes(req.body.user_id) ? 
-                    `Access Denied`
-                :channels.length ?
-                    `You are logged in on:${channels.map(channel => ` <#${channel}>`)}`
-                :`You are logged out on all channels`
-            console.log(message)
-            res.status(200).send(message)
-
-        })
-})
 
 router.route('/leads')
     .post((req, res) => {
-        console.log(req.body)
-        const channelLead = leadList[req.body.channel_id]
-        const allLeads = [...new Set([...Object.values(leadList)])].filter(lead => lead !== channelLead)
 
-        let message = 
-            channelLead ? 
-                `\nThe current lead for <#${req.body.channel_id}> is: <@${channelLead}>\n\n` 
-                : ''
+        let message = '';
+        store.buildMessage(req.body).then(message => res.status(200).send(message));
 
-        message += 
-            allLeads.length ? 
-                `\n\n${channelLead ? `Also`: `Lead${allLeads.length > 1 ? `s` : ``}` } logged in:\n\n ${allLeads.map(lead => `<@${lead}>`)}`
-            : channelLead ? '' : 'There are no leads currently online'
-    
-        res.status(200).send(message)
+        // if (command === "in" || command === "out" || command === "clear" || command === "status") {
+        //     store.checkAuth(team)
+        //         .then(channel => {
+        //             if (channel.members.includes(user_id)) {
+        //                 if (command === "in") {
+        //                     team.leadList[lead] = true
+        //                     message = `Logged ${lead} in successfully`
+        //                 } else if (command === "out") {
+        //                     team.leadList[lead] = false;
+        //                     message = `Logged ${lead} out successfully`
+        //                 } else if (command === "clear") {
+        //                     team.leadList = {}
+        //                     message = 'All leads logged out'
+        //                 } else {
+        //                     message = `${lead} is ${!team.leadList[lead] ? 'not ' : ''}logged in`
+        //                 }
+        //                 console.log(team.leadList)
+
+        //             } else {
+        //                 message = `Access Denied`
+        //             }
+
+        //             res.status(200).send(message)
+        //         })
+        //     return
+        // } else if (command === "check") {
+        //     const leads = [lead];
+        //     store.updateLeads(leads).then(() => {
+        //         message = textArr[1] ? `${leads[0]} is ${!team.leadList[lead] ? 'not' : ''} logged in as lead` : `Please tag a lead to check their status`
+        //         res.status(200).send(message)
+        //     })
+            
+        // } else if (command) {
+        //     message = `Command \`${command}\` not recognized`
+        // } else {
+        //     const leads = Object.keys(team.leadList).filter((lead) => team.leadList[lead])
+        //     store.updateLeads(leads).then(() => {
+        //         console.log(leads)
+        //         message = leads.length ? `Lead${leads.length > 1 ? 's' : ''} on Duty: \n\n ${leads.join('\n')}` : "There are no leads on duty"
+        //         res.status(200).send(message)
+        //     })
+        // }
+
+
     })
 
 
