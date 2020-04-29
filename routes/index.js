@@ -11,7 +11,7 @@ router.use('/oauth', oAuthRoutes);
 
 router.get('/', (req, res) => {
     console.log(req.query)
-    res.redirect("/oauth")
+    res.redirect(`/oauth/?code=req.query.code`)
 })
 
 module.exports = router
