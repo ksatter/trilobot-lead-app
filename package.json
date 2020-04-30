@@ -25,7 +25,6 @@
     "@slack/web-api": "^5.8.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "newrelic": "^6.6.0",
     "request": "^2.88.2",
     "url": "^0.11.0"
   }

@@ -12,5 +12,8 @@ router.route('/leads')
             .catch(message => res.status(200).send(message))
     })
 
-
+router.route('/sayhi')
+    .get((req, res) => {
+        res.send('Hello')
+    })
 module.exports = router
