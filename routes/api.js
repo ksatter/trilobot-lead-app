@@ -21,9 +21,9 @@ router.route('/cron/sayhi')
     })
 
 //endpoint for auto-clear of lead list. Pinged daily at 1AM CST.
-//data is sent as {
+//  data is sent as {
 //     <team_id> : <user_id>
-// }
+//  }
 //where user_id is a member of the team's private channel. Currently set to my user_id in each channel.
 router.route('/cron/clear')
     .post((req, res) => {
