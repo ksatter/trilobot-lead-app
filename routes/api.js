@@ -1,7 +1,8 @@
 const router = require('express').Router();
 
-const {leadMessage, cronClear} = require('../lib/leads')
+const { leadMessage, cronClear } = require('../lib/leads')
 const { laMessage } = require("../lib/las")
+const { macros } = require("../lib/macros")
 
 //BOT ROUTES
 
@@ -15,10 +16,22 @@ router.route('/leads')
 
 router.route('/las')
     .post((req, res) => {
-        laMessage(req.body)
+       
+    })
+
+router.route('/macros')
+    .post((req, res) => {
+        macros(req.body)
             .then(message => res.status(200).send(message))
             .catch(message => console.log('error', message))
     })
+
+// router.route('/macro/create')
+//     .post((req, res) => {
+//         laMessage(req.body)
+//             .then(message => res.status(200).send(message))
+//             .catch(message => console.log('error', message))
+//     })
 //CRON ROUTES (cron-job.org)
 
 //Server is pinged every 30 minutes from 9am to 12am CST to avoid idling in heroku.
